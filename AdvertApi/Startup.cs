@@ -27,27 +27,31 @@ namespace AdvertApi
             services.AddTransient<IAdvertStorageService, DynamoDBAdvertStorage>();
             services.AddTransient<StorageHealthCheck>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddHealthChecks().AddCheck<StorageHealthCheck>("Storage");
-
+                        
             services.AddCors(options =>
             {
                 options.AddPolicy("AllOrigin", policy=> policy.WithOrigins("*").AllowAnyHeader());
             });
 
+            services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Web Advertisement Apis",
                     Version = "version 1",
-                    Contact = new Contact
-                    {
-                        Name = "Aref Karimi",
-                        Email = "a@b.com"
-                    }
-                });
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact { 
+                        Name = "Venu Kadali",
+                        Email = "Venu.Kadali@hbf.com.au"}
+                    //Contact = new 
+                    //{
+                    //    Name = "Venu Kadali",
+                    //    Email = "a@b.com"
+                    //}
+                }); ;
             });
         }
 
@@ -63,6 +67,8 @@ namespace AdvertApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Advert Api");
             });
             app.UseMvc();
+            
+
         }
     }
 }
